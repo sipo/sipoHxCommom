@@ -24,12 +24,25 @@ abstract Angle(Float)
 		this = a;
 	}
 	
-	static public inline function fromRadian(radian:Float) {
-		return new Angle(radian);
+	static public inline function fromRadian(radian:Float) 
+	{
+		return new Angle(ajust(radian));
 	}
 	
-	static public inline function fromDegree(degree:Float) {
-		return new Angle(degree * DEGREE_TO_RADIAN);
+	static public inline function fromDegree(degree:Float) 
+	{
+		return new Angle(ajust(degree * DEGREE_TO_RADIAN));
+	}
+	
+	static public inline function ajust(radian:Float)
+	{
+		return if (-PI_INLINE <= radian && radian <= PI_INLINE)
+		{
+			radian;
+		}else
+		{
+			radian - 2.0 * PI_INLINE * Math.floor(0.5 + radian / ( 2.0 * PI_INLINE ));
+		}
 	}
 	
 	public inline function getRadian():Float
@@ -41,4 +54,19 @@ abstract Angle(Float)
 	{
 		return this * RADIAN_TO_DEGREE;
 	}
+	
+	// rad - 2.0 * Math.PI * Math.floor( 0.5 + rad / ( 2.0 * Math.PI ) )
+}
+@:forward(getRadian, getDegree)
+abstract DeltaAngle(Angle)
+{
+	
+	/**
+	 * コンストラクタ
+	 */
+	inline public function new(a:Angle)
+	{
+		this = a;
+	}
+	
 }
